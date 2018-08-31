@@ -10,10 +10,11 @@
       <input class="form-control" id="name" type="text" placeholder="Name" formControlName="name" required="required"/>
       <div class="alert alert-danger" *ngIf="name.invalid &amp;&amp; (name.dirty || name.touched)">
         <div *ngIf="name.errors?.required">Name is required.</div>
-        <div *ngIf="name.errors?.minlength">
-          Name must be at least 3 characters long.
-          
-        </div>
+        <div *ngIf="name.errors?.minlength">Name must be at least 3 characters long.</div>
+      </div>
+      <div class="alert alert-danger" *ngIf="apiErrors.username">
+        {{apiErrors.username}}
+        
       </div>
     </div>
     <div class="form-group">
@@ -21,10 +22,11 @@
       <input class="form-control" id="email" type="email" placeholder="example@website.com" formControlName="email" required="required"/>
       <div class="alert alert-danger" *ngIf="email.invalid &amp;&amp; (email.dirty || email.touched)">
         <div *ngIf="email.errors?.required">Email is required.</div>
-        <div *ngIf="email.errors?.email">
-          Must be a valid email.
-          
-        </div>
+        <div *ngIf="email.errors?.email">Must be a valid email.</div>
+      </div>
+      <div class="alert alert-danger" *ngIf="apiErrors.email">
+        {{apiErrors.email}}
+        
       </div>
     </div>
     <div class="form-group">
@@ -36,6 +38,10 @@
         <div *ngIf="registerForm.errors?.hasNumber">Password must contain at least one number.</div>
         <div *ngIf="registerForm.errors?.hasUpper">Password must contain at least one uppercase letter.</div>
         <div *ngIf="registerForm.errors?.hasLower">Password must contain at least one lowercase letter.</div>
+      </div>
+      <div class="alert alert-danger" *ngIf="apiErrors.password">
+        {{apiErrors.password}}
+        
       </div>
     </div>
     <div class="form-group">

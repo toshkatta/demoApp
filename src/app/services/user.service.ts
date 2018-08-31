@@ -7,7 +7,8 @@ import { User } from '../user'
 
 const API_URL = environment.apiUrl
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  withCredentials: true
 }
 
 @Injectable({
@@ -19,19 +20,7 @@ export class UserService {
 
   private usersUrl = API_URL + '/users'
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error) // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T)
-    }
-  }
-
   public getUserByUsername(username: string) {
-    console.log('user service get by username: ', username)
     const url = `${this.usersUrl}/?name=${username}`
     return this.http.get<User[]>(url)
       .pipe(
@@ -40,15 +29,25 @@ export class UserService {
           const outcome = user ? `fetched` : `did not find`
 
           console.log(outcome + 'user name: ', username)
-        }),
-        catchError(this.handleError<User>(`getUser username=${username}`))
+        })
       )
   }
 
+  public getUserProfile() {
+    return this.http.get(this.usersUrl, httpOptions)
+  }
+
   public createUser(user: User) {
-    return this.http.post<User>(this.usersUrl, user, httpOptions).pipe(
-      tap((user: User) => console.log(`added user w/ name=${user.name}`)),
-      catchError(this.handleError<User>('createUser'))
-    )
+    return this.http.post<User>(this.usersUrl, user, httpOptions)
+  }
+
+  public login(username, password) {
+    const url = API_URL + '/login'
+    const credentials = {
+      name: username,
+      password: password
+    }
+
+    return this.http.post<User>(url, credentials, httpOptions)
   }
 }

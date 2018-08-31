@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 
 import { User } from '../../user'
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidator } from '../../shared/passwordValidator.directive';
 import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,14 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-  constructor(private userService: UserService) { }
+
+  constructor(private userService: UserService, private router: Router) { }
+
+  apiErrors = {
+    username: null,
+    email: null,
+    password: null
+  }
 
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -37,9 +45,19 @@ export class RegisterComponent {
 
     let user = new User(name, email, password)
     this.userService.createUser(user)
-    .subscribe(user => {
-      console.log('Created user: ', user)
-    })
+      .subscribe(
+        (user) => {
+          console.log('Created user: ', user)
+          this.router.navigate(['/home'])
+        },
+        error => {
+          if (error.error) {
+            this.apiErrors = error.error
+          } else {
+            console.error('Error creating user: ', error)
+          }
+        }
+      )
   }
 
   get name() { return this.registerForm.get('name') }

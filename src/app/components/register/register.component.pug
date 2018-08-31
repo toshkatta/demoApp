@@ -13,6 +13,8 @@
                     Name is required.
                 div(*ngIf='name.errors?.minlength').
                     Name must be at least 3 characters long.
+            .alert.alert-danger(*ngIf='apiErrors.username').
+                {{apiErrors.username}}
 
         .form-group
             label(for='email').
@@ -24,6 +26,8 @@
                     Email is required.
                 div(*ngIf='email.errors?.email').
                     Must be a valid email.
+            .alert.alert-danger(*ngIf='apiErrors.email').
+                {{apiErrors.email}}
 
         .form-group
             label(for='password').
@@ -41,6 +45,9 @@
                     Password must contain at least one uppercase letter.
                 div(*ngIf='registerForm.errors?.hasLower').
                     Password must contain at least one lowercase letter.
+            .alert.alert-danger(*ngIf='apiErrors.password').
+                {{apiErrors.password}}
+
         .form-group
             label(for='repeat-password').
                 Repeat password

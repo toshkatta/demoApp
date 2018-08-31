@@ -1,4 +1,17 @@
-h1.text-center.
-    Welcome to {{title}}!
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    a.navbar-brand(routerLink='/', routerLinkActive='active') {{title}}
+    button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+    #navbarNav.collapse.navbar-collapse
+        ul.navbar-nav
+            li.nav-item
+                a.nav-link(routerLink='/home', routerLinkActive='active') Home
+                    span.sr-only (current)
+            li.nav-item
+                a.nav-link(routerLink='/register', routerLinkActive='active') Register
+            li.nav-item
+                a.nav-link(routerLink='/login', routerLinkActive='active') Login
+            li.nav-item
+                a.nav-link(routerLink='/profile', routerLinkActive='active') Profile
 
-app-register
+router-outlet
