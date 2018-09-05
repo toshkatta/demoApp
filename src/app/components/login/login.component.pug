@@ -1,10 +1,10 @@
-.container
+.text-center.form-container
     h2.
         Login
 
-    form.form([formGroup]='loginForm', (ngSubmit)='onSubmit()')
+    form.form.auth-form([formGroup]='loginForm', (ngSubmit)='onSubmit()')
         .form-group
-            label(for='name').
+            label.sr-only(for='name').
                 Name
             input#name.form-control(type='text', placeholder='Name', formControlName='name', required)
 
@@ -12,7 +12,7 @@
                 {{apiErrors.username}}
 
         .form-group
-            label(for='password').
+            label.sr-only(for='password').
                 Password
             input#password.form-control(type='password', placeholder='Password', formControlName='password', required)
 
@@ -20,5 +20,5 @@
                 {{apiErrors.password}}
 
 
-        button(type='submit', [disabled]='!loginForm.valid').btn.btn-primary.
+        button(type='submit', [disabled]='!loginForm.valid').btn.btn-primary.btn-lg.btn-block.
             Login

@@ -1,10 +1,10 @@
-.container
+.text-center.form-container
     h2.
         Register
 
-    form.form([formGroup]='registerForm', (ngSubmit)='onSubmit()')
+    form.form.auth-form([formGroup]='registerForm', (ngSubmit)='onSubmit()')
         .form-group
-            label(for='name').
+            label.sr-only(for='name').
                 Name
             input#name.form-control(type='text', placeholder='Name', formControlName='name', required)
 
@@ -13,13 +13,15 @@
                     Name is required.
                 div(*ngIf='name.errors?.minlength').
                     Name must be at least 3 characters long.
+            .alert.alert-danger(*ngIf='registerForm.errors?.isLetters && (name.dirty || name.touched)').
+                Name can only contain letters.
             .alert.alert-danger(*ngIf='apiErrors.username').
                 {{apiErrors.username}}
 
         .form-group
-            label(for='email').
+            label.sr-only(for='email').
                 Email
-            input#email.form-control(type='email', placeholder='example@website.com', formControlName='email', required)
+            input#email.form-control(type='email', placeholder='Email', formControlName='email', required)
 
             .alert.alert-danger(*ngIf='email.invalid && (email.dirty || email.touched)')
                 div(*ngIf='email.errors?.required').
@@ -30,7 +32,7 @@
                 {{apiErrors.email}}
 
         .form-group
-            label(for='password').
+            label.sr-only(for='password').
                 Password
             input#password.form-control(type='password', placeholder='Password', formControlName='password', required)
 
@@ -39,22 +41,22 @@
                     Password is required.
                 div(*ngIf='password.errors?.minlength').
                     Password must be at least 8 characters long.
-                div(*ngIf='registerForm.errors?.hasNumber').
-                    Password must contain at least one number.
-                div(*ngIf='registerForm.errors?.hasUpper').
-                    Password must contain at least one uppercase letter.
-                div(*ngIf='registerForm.errors?.hasLower').
-                    Password must contain at least one lowercase letter.
+            .alert.alert-danger(*ngIf='registerForm.errors?.hasNumber && (password.dirty || password.touched)').
+                Password must contain at least one number.
+            .alert.alert-danger(*ngIf='registerForm.errors?.hasUpper && (password.dirty || password.touched)').
+                Password must contain at least one uppercase letter.
+            .alert.alert-danger(*ngIf='registerForm.errors?.hasLower && (password.dirty || password.touched)').
+                Password must contain at least one lowercase letter.
             .alert.alert-danger(*ngIf='apiErrors.password').
                 {{apiErrors.password}}
 
         .form-group
-            label(for='repeat-password').
+            label.sr-only(for='repeat-password').
                 Repeat password
-            input#repeat-password.form-control(type='password', placeholder='Password', formControlName='repeatPassword', required)
+            input#repeat-password.form-control(type='password', placeholder='Repeat Password', formControlName='repeatPassword', required)
 
             .alert.alert-danger(*ngIf='registerForm.errors?.matchPassword && (repeatPassword.dirty || repeatPassword.touched)').
                 Passwords do not match.
 
-        button(type='submit', [disabled]='!registerForm.valid').btn.btn-primary.
+        button(type='submit', [disabled]='!registerForm.valid').btn.btn-primary.btn-lg.btn-block.
             Submit

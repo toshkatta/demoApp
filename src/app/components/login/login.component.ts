@@ -1,6 +1,9 @@
 import { Component } from '@angular/core'
-import { UserService } from '../../services/user.service'
+import { Router } from '@angular/router'
 import { FormGroup, FormControl } from '@angular/forms'
+
+import { UserService } from '../../services/user.service'
+import { AuthService } from '../../services/auth.service'
 
 @Component({
   selector: 'app-login',
@@ -9,7 +12,7 @@ import { FormGroup, FormControl } from '@angular/forms'
 })
 export class LoginComponent {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
 
   apiErrors = {
     username: null,
@@ -22,15 +25,16 @@ export class LoginComponent {
   })
 
   onSubmit() {
-    const name = this.name.value.trim();
-    const password = this.password.value.trim();
+    const name = this.name.value.trim()
+    const password = this.password.value.trim()
 
     if (!name || !password) return
 
-    this.userService.login(name, password)
+    this.authService.login(name, password)
       .subscribe(
-        (user) => {
-          console.log('Logged in: ', user)
+        resp => {
+          console.log('Logged in: ', resp)
+          this.router.navigate([resp.redirect])
         },
         error => {
           if (error.error) {

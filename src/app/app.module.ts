@@ -5,18 +5,16 @@ import { HttpClientModule } from '@angular/common/http'
 
 import { AppComponent } from './app.component'
 import { RegisterComponent } from './components/register/register.component'
-import { UniqueUsernameValidatorDirective } from './shared/unique-username-validator.directive'
 import { NotFoundComponent } from './components/not-found/not-found.component'
-import { AppRoutingModule } from './app-routing.module';
-import { HomeComponent } from './components/home/home.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { AppRoutingModule } from './app-routing.module'
+import { HomeComponent } from './components/home/home.component'
+import { ProfileComponent } from './components/profile/profile.component'
 import { LoginComponent } from './components/login/login.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    UniqueUsernameValidatorDirective,
     NotFoundComponent,
     HomeComponent,
     ProfileComponent,

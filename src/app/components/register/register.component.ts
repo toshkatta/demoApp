@@ -1,10 +1,13 @@
 import { Component } from '@angular/core'
+import { Router } from '@angular/router'
+import { FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { User } from '../../user'
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PasswordValidator } from '../../shared/passwordValidator.directive';
-import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
+import { RegisterValidator } from '../../shared/registerValidator.directive'
+import { UserService } from '../../services/user.service'
+import { AuthService } from '../../services/auth.service'
+
+import { debounceTime, subscribeOn, distinctUntilChanged } from 'rxjs/operators'
 
 @Component({
   selector: 'app-register',
@@ -13,7 +16,21 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, private router: Router) {
+    this.name.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe(val => {
+      this.checkUsername()
+    })
+
+    this.email.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged()
+    ).subscribe(val => {
+      this.checkEmail()
+    })
+  }
 
   apiErrors = {
     username: null,
@@ -28,27 +45,45 @@ export class RegisterComponent {
     repeatPassword: new FormControl('', [Validators.required])
   }, {
       validators: [
-        PasswordValidator.strongPassword,
-        PasswordValidator.matchPassword
+        RegisterValidator.strongPassword,
+        RegisterValidator.matchPassword,
+        RegisterValidator.usernameIsLetters
       ]
     })
 
+  private checkEmail() {
+    let email = this.email.value.trim()
+    this.authService.checkEmailTaken(email).subscribe(
+      resp => {
+        this.apiErrors.email = resp ? 'Email already taken' : null
+      }
+    )
+  }
+
+  private checkUsername() {
+    let username = this.name.value.trim()
+    this.authService.checkUsernameTaken(username).subscribe(
+      resp => {
+        this.apiErrors.username = resp ? 'Username already taken' : null
+      }
+    )
+  }
+
   onSubmit() {
-    let name = this.name.value.trim();
-    let email = this.email.value.trim();
-    let password = this.password.value.trim();
-    let repeatPassword = this.repeatPassword.value.trim();
+    let name = this.name.value.trim()
+    let email = this.email.value.trim()
+    let password = this.password.value.trim()
+    let repeatPassword = this.repeatPassword.value.trim()
 
     if (!name || !email || !password || !repeatPassword) return
 
     if (password !== repeatPassword) return
 
     let user = new User(name, email, password)
-    this.userService.createUser(user)
+    this.authService.register(user)
       .subscribe(
-        (user) => {
-          console.log('Created user: ', user)
-          this.router.navigate(['/home'])
+        resp => {
+          this.router.navigate([resp.redirect])
         },
         error => {
           if (error.error) {
