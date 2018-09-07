@@ -7,25 +7,28 @@ import { HomeComponent } from "./components/home/home.component"
 import { ProfileComponent } from "./components/profile/profile.component"
 import { LoginComponent } from "./components/login/login.component"
 
-import { AuthGuard } from "./guards/auth.guard"
+import { UserLoggedInGuard } from "./guards/user-logged-in.guard"
+import { NegateUserLoggedInGuard } from "./guards/negate-user-logged-in.guard";
 
 const appRoutes: Routes = [
     {
-        path: 'home',
+        path: '',
         component: HomeComponent
     },
     {
         path: 'register',
-        component: RegisterComponent
+        component: RegisterComponent,
+        canActivate: [NegateUserLoggedInGuard]
     },
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
+        canActivate: [NegateUserLoggedInGuard]
     },
     {
         path: 'profile',
         component: ProfileComponent,
-        canActivate: [AuthGuard]
+        canActivate: [UserLoggedInGuard]
     },
     {
         path: '**',

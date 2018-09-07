@@ -9,7 +9,8 @@ import { environment } from '../../environments/environment'
 export interface LoginData {
   userId: number,
   isAuthenticated: boolean,
-  redirect: string
+  redirect: string,
+  msg?: string | null
 }
 
 export const API_URL = environment.apiUrl
@@ -26,7 +27,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  get isLoggedIn() {
+  public isLoggedIn() {
     const url = API_URL + '/login'
     return this.http.get<boolean>(url, HTTP_OPTIONS)
   }
@@ -54,5 +55,15 @@ export class AuthService {
     }
 
     return this.http.post<LoginData>(url, credentials, HTTP_OPTIONS)
+  }
+
+  public logout() {
+    const url = API_URL + '/logout'
+    return this.http.get<LoginData>(url, HTTP_OPTIONS)
+  }
+
+  public updatePassword(password) {
+    const url = API_URL + '/password'
+    return this.http.put(url, password, HTTP_OPTIONS)
   }
 }

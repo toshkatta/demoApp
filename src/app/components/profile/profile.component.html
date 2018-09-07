@@ -1,28 +1,96 @@
 
-<h2 class="text-center">Profile</h2>
+<h2 class="text-center mb-5">Profile</h2>
 <div class="container">
-  <div class="row">
-    <div class="col col-lg-3">
-      <h5>Username</h5>
+  <div class="auth-form"><img class="rounded d-block mx-auto" src="{{user.avatar}}" alt="Avatar"/>
+    <input class="float-left" type="file" name="avatar" ng2FileSelect="ng2FileSelect" [uploader]="uploader"/>
+    <button class="float-right btn btn-success btn-s" type="button" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">Upload</button>
+    <div class="clearfix"></div>
+  </div>
+  <div class="auth-form" *ngIf="!editMode">
+    <div class="row">
+      <div class="col col-sm-4 mb-2">
+        <h5>Username</h5>
+      </div>
+      <div class="col col-sm-8 mb-2">
+        <h5>{{user.name}}</h5>
+      </div>
     </div>
-    <div class="col col-lg-9">
-      <h5>{{user.name}}</h5>
+    <div class="row">
+      <div class="col col-sm-4 mb-2">
+        <h5>Email</h5>
+      </div>
+      <div class="col col-sm-8 mb-2">
+        <h5>{{user.email}}</h5>
+      </div>
+    </div>
+    <div class="row mt-5" *ngIf="!editPasswordMode">
+      <div class="col col-sm-12">
+        <button class="btn btn-sm btn-block btn-primary" (click)="edit()">Edit</button>
+      </div>
+    </div>
+    <div class="row mt-1" *ngIf="!editPasswordMode">
+      <div class="col col-sm-12">
+        <button class="btn btn-sm btn-block btn-info" (click)="editPassword()">Change Password</button>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col col-lg-3">
-      <h5>Email</h5>
+  <form class="form auth-form" [formGroup]="editForm" (ngSubmit)="onSubmit()" *ngIf="editMode">
+    <div class="form-group">
+      <label class="sr-only" for="name">Name</label>
+      <input class="form-control" id="name" type="text" formControlName="name" required="required"/>
+      <div class="alert alert-danger" *ngIf="name.invalid &amp;&amp; (name.dirty || name.touched)">
+        <div *ngIf="name.errors?.required">Name is required.</div>
+        <div *ngIf="name.errors?.minlength">Name must be at least 3 characters long.</div>
+      </div>
+      <div class="alert alert-danger" *ngIf="editForm.errors?.isLetters &amp;&amp; (name.dirty || name.touched)">Name can only contain letters.</div>
+      <div class="alert alert-danger" *ngIf="apiErrors.username">
+        {{apiErrors.username}}
+        
+      </div>
     </div>
-    <div class="col col-lg-9">
-      <h5>{{user.email}}</h5>
+    <div class="form-group">
+      <label class="sr-only" for="email">Email</label>
+      <input class="form-control" id="email" type="email" formControlName="email" required="required"/>
+      <div class="alert alert-danger" *ngIf="email.invalid &amp;&amp; (email.dirty || email.touched)">
+        <div *ngIf="email.errors?.required">Email is required.</div>
+        <div *ngIf="email.errors?.email">Must be a valid email.</div>
+      </div>
+      <div class="alert alert-danger" *ngIf="apiErrors.email">
+        {{apiErrors.email}}
+        
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col col-lg-3">
-      <h5>Id</h5>
+    <button class="btn btn-success btn-lg btn-block" type="submit">Save changes</button>
+    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="edit()">
+      Cancel
+      
+    </button>
+  </form>
+  <form class="form auth-form" [formGroup]="passwordForm" (ngSubmit)="submitPassword()" *ngIf="editPasswordMode">
+    <div class="form-group">
+      <label class="sr-only" for="password">Password</label>
+      <input class="form-control" id="password" type="password" placeholder="New Password" formControlName="password" required="required"/>
+      <div class="alert alert-danger" *ngIf="password.invalid &amp;&amp; (password.dirty || password.touched)">
+        <div *ngIf="password.errors?.required">Password is required.</div>
+        <div *ngIf="password.errors?.minlength">Password must be at least 8 characters long.</div>
+      </div>
+      <div class="alert alert-danger" *ngIf="passwordForm.errors?.hasNumber &amp;&amp; (password.dirty || password.touched)">Password must contain at least one number.</div>
+      <div class="alert alert-danger" *ngIf="passwordForm.errors?.hasUpper &amp;&amp; (password.dirty || password.touched)">Password must contain at least one uppercase letter.</div>
+      <div class="alert alert-danger" *ngIf="passwordForm.errors?.hasLower &amp;&amp; (password.dirty || password.touched)">Password must contain at least one lowercase letter.</div>
+      <div class="alert alert-danger" *ngIf="apiErrors.password">
+        {{apiErrors.password}}
+        
+      </div>
     </div>
-    <div class="col col-lg-9">
-      <h5>{{user.id}}</h5>
+    <div class="form-group">
+      <label class="sr-only" for="repeat-password">Repeat password</label>
+      <input class="form-control" id="repeat-password" type="password" placeholder="Repeat Password" formControlName="repeatPassword" required="required"/>
+      <div class="alert alert-danger" *ngIf="passwordForm.errors?.matchPassword &amp;&amp; (repeatPassword.dirty || repeatPassword.touched)">
+        Passwords do not match.
+        
+      </div>
     </div>
-  </div>
+    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="!passwordForm.valid">Save changes</button>
+    <button class="btn btn-danger btn-lg btn-block" type="button" (click)="editPassword()">Cancel</button>
+  </form>
 </div>

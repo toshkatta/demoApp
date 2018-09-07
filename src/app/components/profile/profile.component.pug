@@ -1,18 +1,92 @@
-h2.text-center Profile
+h2.text-center.mb-5 Profile
 
 .container
-    .row
-        .col.col-lg-3
-            h5 Username
-        .col.col-lg-9
-            h5 {{user.name}}
-    .row
-        .col.col-lg-3
-            h5 Email
-        .col.col-lg-9
-            h5 {{user.email}}
-    .row
-        .col.col-lg-3
-            h5 Id
-        .col.col-lg-9
-            h5 {{user.id}}
+    .auth-form
+        img.rounded.d-block.mx-auto(src='{{user.avatar}}', alt='Avatar')
+        input.float-left(type='file', name="avatar", ng2FileSelect, [uploader]="uploader" )
+        button.float-right.btn.btn-success.btn-s(type='button', (click)='uploader.uploadAll()', [disabled]="!uploader.getNotUploadedItems().length") Upload
+        .clearfix
+    .auth-form(*ngIf='!editMode')
+        .row
+            .col.col-sm-4.mb-2
+                h5 Username
+            .col.col-sm-8.mb-2
+                h5 {{user.name}}
+        .row
+            .col.col-sm-4.mb-2
+                h5 Email
+            .col.col-sm-8.mb-2
+                h5 {{user.email}}
+        .row.mt-5(*ngIf='!editPasswordMode')
+            .col.col-sm-12
+                button.btn.btn-sm.btn-block.btn-primary((click)='edit()') Edit
+        .row.mt-1(*ngIf='!editPasswordMode')
+            .col.col-sm-12
+                button.btn.btn-sm.btn-block.btn-info((click)='editPassword()') Change Password
+
+    form.form.auth-form([formGroup]='editForm', (ngSubmit)='onSubmit()', *ngIf='editMode')
+        .form-group
+            label.sr-only(for='name').
+                Name
+            input#name.form-control(type='text', formControlName='name', required)
+
+            .alert.alert-danger(*ngIf='name.invalid && (name.dirty || name.touched)')
+                div(*ngIf='name.errors?.required').
+                    Name is required.
+                div(*ngIf='name.errors?.minlength').
+                    Name must be at least 3 characters long.
+            .alert.alert-danger(*ngIf='editForm.errors?.isLetters && (name.dirty || name.touched)').
+                Name can only contain letters.
+            .alert.alert-danger(*ngIf='apiErrors.username').
+                {{apiErrors.username}}
+
+        .form-group
+            label.sr-only(for='email').
+                Email
+            input#email.form-control(type='email', formControlName='email', required)
+
+            .alert.alert-danger(*ngIf='email.invalid && (email.dirty || email.touched)')
+                div(*ngIf='email.errors?.required').
+                    Email is required.
+                div(*ngIf='email.errors?.email').
+                    Must be a valid email.
+            .alert.alert-danger(*ngIf='apiErrors.email').
+                {{apiErrors.email}}
+
+        button(type='submit').btn.btn-success.btn-lg.btn-block.
+            Save changes
+        button(type='button', (click)='edit()').btn.btn-danger.btn-lg.btn-block.
+            Cancel
+
+    form.form.auth-form([formGroup]='passwordForm', (ngSubmit)='submitPassword()', *ngIf='editPasswordMode')
+        .form-group
+            label.sr-only(for='password').
+                Password
+            input#password.form-control(type='password', placeholder='New Password', formControlName='password', required)
+
+            .alert.alert-danger(*ngIf='password.invalid && (password.dirty || password.touched)')
+                div(*ngIf='password.errors?.required').
+                    Password is required.
+                div(*ngIf='password.errors?.minlength').
+                    Password must be at least 8 characters long.
+            .alert.alert-danger(*ngIf='passwordForm.errors?.hasNumber && (password.dirty || password.touched)').
+                Password must contain at least one number.
+            .alert.alert-danger(*ngIf='passwordForm.errors?.hasUpper && (password.dirty || password.touched)').
+                Password must contain at least one uppercase letter.
+            .alert.alert-danger(*ngIf='passwordForm.errors?.hasLower && (password.dirty || password.touched)').
+                Password must contain at least one lowercase letter.
+            .alert.alert-danger(*ngIf='apiErrors.password').
+                {{apiErrors.password}}
+
+        .form-group
+            label.sr-only(for='repeat-password').
+                Repeat password
+            input#repeat-password.form-control(type='password', placeholder='Repeat Password', formControlName='repeatPassword', required)
+
+            .alert.alert-danger(*ngIf='passwordForm.errors?.matchPassword && (repeatPassword.dirty || repeatPassword.touched)').
+                Passwords do not match.
+
+        button(type='submit', [disabled]='!passwordForm.valid').btn.btn-success.btn-lg.btn-block.
+            Save changes
+        button(type='button', (click)='editPassword()').btn.btn-danger.btn-lg.btn-block.
+            Cancel

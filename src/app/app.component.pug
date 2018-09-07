@@ -1,16 +1,18 @@
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
     a.navbar-brand(routerLink='/', routerLinkActive='active') {{title}}
-    button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+    button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarNav', aria-controls='navbarNav', aria-expanded='false', aria-label='Toggle navigation')
         span.navbar-toggler-icon
     #navbarNav.collapse.navbar-collapse
-        ul.navbar-nav
+        ul.navbar-nav.ml-auto
             li.nav-item
-                a.nav-link(routerLink='/home', routerLinkActive='active') Home
-            li.nav-item
-                a.nav-link(routerLink='/register', routerLinkActive='active') Register
-            li.nav-item
-                a.nav-link(routerLink='/login', routerLinkActive='active') Login
-            li.nav-item
+                a.nav-link(routerLink='/', routerLinkActive='active', [routerLinkActiveOptions]='{ exact: true }') Home
+            li.nav-item(*ngIf='loggedIn')
                 a.nav-link(routerLink='/profile', routerLinkActive='active') Profile
+            li.nav-item(*ngIf='!loggedIn')
+                a.nav-link(routerLink='/register', routerLinkActive='active') Register
+            li.nav-item(*ngIf='!loggedIn')
+                a.nav-link(routerLink='/login', routerLinkActive='active') Login
+            li.nav-item.pointer(*ngIf='loggedIn', (click)='logout()')
+                a.nav-link Logout
 
-router-outlet
+router-outlet((activate)='checkIfLoggedIn()')

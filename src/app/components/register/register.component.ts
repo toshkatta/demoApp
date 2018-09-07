@@ -7,7 +7,7 @@ import { RegisterValidator } from '../../shared/registerValidator.directive'
 import { UserService } from '../../services/user.service'
 import { AuthService } from '../../services/auth.service'
 
-import { debounceTime, subscribeOn, distinctUntilChanged } from 'rxjs/operators'
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 
 @Component({
   selector: 'app-register',
@@ -32,13 +32,13 @@ export class RegisterComponent {
     })
   }
 
-  apiErrors = {
+  private apiErrors = {
     username: null,
     email: null,
     password: null
   }
 
-  registerForm = new FormGroup({
+  private registerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),

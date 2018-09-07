@@ -14,10 +14,7 @@ export class LoginComponent {
 
   constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
 
-  apiErrors = {
-    username: null,
-    password: null
-  }
+  private apiError
 
   loginForm = new FormGroup({
     name: new FormControl(''),
@@ -33,12 +30,15 @@ export class LoginComponent {
     this.authService.login(name, password)
       .subscribe(
         resp => {
-          console.log('Logged in: ', resp)
-          this.router.navigate([resp.redirect])
+          if (resp.msg) {
+            this.apiError = resp.msg
+          } else {
+            this.router.navigate([resp.redirect])
+          }
         },
         error => {
           if (error.error) {
-            this.apiErrors = error.error
+            this.apiError = error.error
           } else {
             console.error('Error logging in: ', error)
           }

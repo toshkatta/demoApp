@@ -9,7 +9,7 @@ body {
 
 .auth-form {
     width: 100%;
-    max-width: 330px;
+    max-width: 430px;
     padding: 15px;
     margin: 0 auto;
 }
@@ -20,4 +20,8 @@ body {
     left: 0;
     padding: 0;
     right: 0;
+}
+
+.pointer {
+    cursor: pointer;
 }

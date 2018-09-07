@@ -6,14 +6,10 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
-
+export class NegateUserLoggedInGuard implements CanActivate {
   constructor(private authService: AuthService) { }
-
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    console.log('v auth guard: ', this.authService.isLoggedIn)
-    return this.authService.isLoggedIn;
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    const gosho = this.authService.isLoggedIn().toPromise().then(val => !val)
+    return gosho
   }
 }

@@ -8,16 +8,13 @@
                 Name
             input#name.form-control(type='text', placeholder='Name', formControlName='name', required)
 
-            .alert.alert-danger(*ngIf='apiErrors.username').
-                {{apiErrors.username}}
-
         .form-group
             label.sr-only(for='password').
                 Password
             input#password.form-control(type='password', placeholder='Password', formControlName='password', required)
 
-            .alert.alert-danger(*ngIf='apiErrors.password').
-                {{apiErrors.password}}
+            .alert.alert-danger(*ngIf='apiError').
+                {{apiError}}
 
 
         button(type='submit', [disabled]='!loginForm.valid').btn.btn-primary.btn-lg.btn-block.

@@ -11,6 +11,8 @@ import { HomeComponent } from './components/home/home.component'
 import { ProfileComponent } from './components/profile/profile.component'
 import { LoginComponent } from './components/login/login.component'
 
+import { FileSelectDirective } from 'ng2-file-upload'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,8 @@ import { LoginComponent } from './components/login/login.component'
     NotFoundComponent,
     HomeComponent,
     ProfileComponent,
-    LoginComponent
+    LoginComponent,
+    FileSelectDirective
   ],
   imports: [
     BrowserModule,
