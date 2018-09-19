@@ -1,2 +1,14 @@
 
-<h2 class="text-center">Welcome home!</h2>
+<div class="container">
+  <ul class="row">
+    <li class="col col-md-4" *ngFor="let sneaker of sneakers"><img class="rounded img-fluid" src="{{apiUrl}}/{{sneaker.image}}"/>
+      <h4>{{sneaker.brand.name}}</h4>
+      <h5>{{sneaker.name}}</h5>
+      <div>{{sneaker.type.name}}</div>
+      <div>{{sneaker.gender.name}}</div>
+      <div>Available sizes
+        <div *ngFor="let size of sneaker.sizes">{{size.eu}}</div>
+      </div>
+    </li>
+  </ul>
+</div>

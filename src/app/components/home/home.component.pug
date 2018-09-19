@@ -1,1 +1,10 @@
-h2.text-center Welcome home!
+.container
+    ul.row
+        li.col.col-md-4(*ngFor='let sneaker of sneakers')
+            img.rounded.img-fluid(src='{{apiUrl}}/{{sneaker.image}}')
+            h4 {{sneaker.brand.name}}
+            h5 {{sneaker.name}}
+            div {{sneaker.type.name}}
+            div {{sneaker.gender.name}}
+            div Available sizes
+                div(*ngFor='let size of sneaker.sizes') {{size.eu}}

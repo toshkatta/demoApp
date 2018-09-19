@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http'
 
 import { HTTP_OPTIONS, USERS_URL } from './auth.service'
 import { UserData } from '../components/profile/profile.component'
-import { User } from '../user'
 
 
 

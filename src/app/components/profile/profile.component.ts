@@ -130,7 +130,7 @@ export class ProfileComponent implements OnInit {
       })
   }
 
-  public uploader: FileUploader = new FileUploader({ url: API_URL + '/upload', itemAlias: 'avatar' });
+  public uploader: FileUploader = new FileUploader({ url: API_URL + '/uploadAvatar', itemAlias: 'avatar' })
 
   onSubmit() {
     let name: string = this.name.value.trim()
@@ -169,11 +169,11 @@ export class ProfileComponent implements OnInit {
 
     this.loadProfile()
 
-    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = true; };
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = true }
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      // console.log('ImageUpload:uploaded:', item, status, response);
+      // console.log('ImageUpload:uploaded:', item, status, response)
         this.loadProfile()
-    };
+    }
   }
 
   get name() { return this.editForm.get('name') }

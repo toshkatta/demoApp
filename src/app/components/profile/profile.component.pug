@@ -3,7 +3,7 @@ h2.text-center.mb-5 Profile
 .container
     .auth-form
         img.rounded.d-block.mx-auto(src='{{user.avatar}}', alt='Avatar')
-        input.float-left(type='file', name="avatar", ng2FileSelect, [uploader]="uploader" )
+        input.float-left(type='file', name="avatar", ng2FileSelect, [uploader]="uploader")
         button.float-right.btn.btn-success.btn-s(type='button', (click)='uploader.uploadAll()', [disabled]="!uploader.getNotUploadedItems().length") Upload
         .clearfix
     .auth-form(*ngIf='!editMode')

@@ -1,0 +1,124 @@
+.container
+    h2.text-center.
+        Create a sneaker
+
+    .row.mt-4
+        .col-md-3
+            h4 Select up to 4 images
+            .card.card-block.bg-light.py-5.pl-3.drop-zone(name='sneakers', ng2FileDrop, [ngClass]="{'nv-file-over': hasBaseDropZoneOver}", (fileover)='fileOverBase($event)', [uploader]="uploader")
+                | Base drop zone
+            .mt-4.mb-2 Multiple
+            input.form-control-file(type='file', name='sneakers', ng2FileSelect, [uploader]='uploader', multiple)
+            br
+
+        .col-md-9.mb-4
+            h3 Upload queue
+            p Queue length: {{ uploader?.queue?.length }}
+            table.table
+                thead
+                tr
+                    th(width='50%') Name
+                    th Status
+                    th Actions
+                tbody
+                tr(*ngFor='let item of uploader.queue')
+                    td
+                        strong {{ item?.file?.name }}
+                    td(*ngIf='uploader.isHTML5', nowrap) {{ item?.file?.size/1024/1024 | number: '.2' }} MB
+                    td(*ngIf='uploader.isHTML5')
+                        .progress.mb-0
+                            .progress-bar(role='progressbar', [ngStyle]="{ 'width': item.progress + '%' }")
+                    td.text-center
+                        span(*ngIf='item.isSuccess')
+                            i.glyphicon.glyphicon-ok
+                        span(*ngIf='item.isCancel')
+                            i.glyphicon.glyphicon-ban-circle
+                        span(*ngIf='item.isError')
+                            i.glyphicon.glyphicon-remove
+                    td(nowrap)
+                        button.btn.btn-success.btn-sm(type='button', (click)='item.upload()', [disabled]='item.isReady || item.isUploading || item.isSuccess')
+                            span.glyphicon.glyphicon-upload
+                            |  Upload
+                        button.btn.btn-warning.btn-sm(type='button', (click)='item.cancel()', [disabled]='!item.isUploading')
+                            span.glyphicon.glyphicon-ban-circle
+                            |  Cancel
+                        button.btn.btn-danger.btn-sm(type='button', (click)='removeImage(item)')
+                            span.glyphicon.glyphicon-trash
+                            |  Remove
+            div
+                div
+                | Queue progress:
+                .progress.mb-3
+                    .progress-bar(role='progressbar', [ngStyle]="{ 'width': uploader.progress + '%' }")
+                button.btn.btn-success.btn-s(type='button' ,(click)='uploader.uploadAll()', [disabled]='!uploader.getNotUploadedItems().length')
+                    span.glyphicon.glyphicon-upload
+                    |  Upload all
+                button.btn.btn-warning.btn-s(type='button', (click)='uploader.cancelAll()', [disabled]='!uploader.isUploading')
+                    span.glyphicon.glyphicon-ban-circle
+                    |  Cancel all
+                button.btn.btn-danger.btn-s(type='button', (click)='uploader.clearQueue()', [disabled]='!uploader.queue.length')
+                    span.glyphicon.glyphicon-trash
+                    |  Remove all
+
+    hr.bg-primary
+
+    form.form.mt-4([formGroup]='sneakerForm', (ngSubmit)='onSubmit()')
+        .form-group
+            label(for='brand').
+                Add a new brand
+            .row
+                .col-md-10
+                    input#brand.form-control(type='text', placeholder='Brand name', formControlName='brand')
+                .col-md-2
+                    button.btn.btn-block.btn-primary.p-2((click)='addBrand()', type='buttton', role='button') Create
+            .alert.alert-danger(*ngIf='apiErrors.brandName').
+                {{apiErrors.brandName}}
+            
+            p.mt-3.mb-0 Or select form the list below
+            .row
+                .col-md-2.col-sm-4.col-4.p-0(*ngFor='let brandBtn of brands')
+                    .pointer.text-center.p-3.m-1.rounded([ngClass]="brandBtn === selectedBrand ? 'btn-success' : 'btn-outline-success'", (click)='selectBrand(brandBtn)') {{brandBtn.name}}
+
+            hr.bg-primary
+
+            label.mt-3(for='name').
+                Model
+            input#name.form-control(type='text', placeholder='Model name', formControlName='name', required)
+
+            .alert.alert-danger(*ngIf='name.invalid && (name.dirty || name.touched)')
+                div(*ngIf='name.errors?.required').
+                    Name is required.
+            .alert.alert-danger(*ngIf='apiErrors.modelName').
+                {{apiErrors.modelName}}
+
+            .row
+                .col
+                    p.mt-3.mb-0 Low-top or high-top
+                    .form-check
+                        input#type-low.form-check-input(type='radio', formControlName='type', name='type', value=1)
+                        label.form-check-label(for='type-low') Low-top
+                    .form-check
+                        input#type-high.form-check-input(type='radio', formControlName='type', name='type', value=2)
+                        label.form-check-label(for='type-high') High-top
+
+                .col
+                    p.mt-3.mb-0 Men's or women's
+                    .form-check
+                        input#gender-male.form-check-input(type='radio', formControlName='gender', name='gender', value=1)
+                        label.form-check-label(for='gender-male') Men's
+                    .form-check
+                        input#gender-female.form-check-input(type='radio', formControlName='gender', name='gender', value=2)
+                        label.form-check-label(for='gender-female') Women's
+
+            hr.bg-primary
+
+            p.mt-3.mb-0 Select available sizes
+            .row
+                .col-md-1.col-sm-3.col-4.p-0(*ngFor='let size of sizes')
+                    .pointer.text-center.p-3.m-1.rounded([ngClass]="selectedSizes.indexOf(size) !== -1 ? 'btn-success' : 'btn-outline-success'", (click)='selectSize(size)') {{size}}
+
+
+        .alert.alert-danger(*ngIf='apiErrors.invalidForm').
+                {{apiErrors.invalidForm}}
+        button(type='submit').btn.btn-primary.btn-lg.btn-block.
+            Submit

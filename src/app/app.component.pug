@@ -8,6 +8,8 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
                 a.nav-link(routerLink='/', routerLinkActive='active', [routerLinkActiveOptions]='{ exact: true }') Home
             li.nav-item(*ngIf='loggedIn')
                 a.nav-link(routerLink='/profile', routerLinkActive='active') Profile
+            li.nav-item
+                a.nav-link(routerLink='/sneakeradmin', routerLinkActive='active') Admin
             li.nav-item(*ngIf='!loggedIn')
                 a.nav-link(routerLink='/register', routerLinkActive='active') Register
             li.nav-item(*ngIf='!loggedIn')

@@ -11,7 +11,8 @@ import { HomeComponent } from './components/home/home.component'
 import { ProfileComponent } from './components/profile/profile.component'
 import { LoginComponent } from './components/login/login.component'
 
-import { FileSelectDirective } from 'ng2-file-upload'
+import { FileUploadModule } from 'ng2-file-upload';
+import { SneakerAdminComponent } from './components/sneaker-admin/sneaker-admin.component';
 
 @NgModule({
   declarations: [
@@ -21,14 +22,15 @@ import { FileSelectDirective } from 'ng2-file-upload'
     HomeComponent,
     ProfileComponent,
     LoginComponent,
-    FileSelectDirective
+    SneakerAdminComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FileUploadModule
   ],
   providers: [],
   bootstrap: [AppComponent]
