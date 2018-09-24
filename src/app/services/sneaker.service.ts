@@ -17,6 +17,11 @@ export class SneakerService {
     return this.http.get<Sneaker[]>(SNEAKERS_URL)
   }
 
+  public getSneakerById(id) {
+    const url = SNEAKERS_URL + 'Id?id=' + id
+    return this.http.get<Sneaker>(url)
+  }
+
   public checkModelExists(model) {
     const url = API_URL + '/checkModelExists'
     return this.http.post<boolean>(url, model)

@@ -10,6 +10,7 @@ import { LoginComponent } from "./components/login/login.component"
 import { UserLoggedInGuard } from "./guards/user-logged-in.guard"
 import { NegateUserLoggedInGuard } from "./guards/negate-user-logged-in.guard";
 import { SneakerAdminComponent } from "./components/sneaker-admin/sneaker-admin.component";
+import { SneakerDetailComponent } from "./components/sneaker-detail/sneaker-detail.component";
 
 const appRoutes: Routes = [
     {
@@ -34,6 +35,10 @@ const appRoutes: Routes = [
     {
         path: 'sneakeradmin',
         component: SneakerAdminComponent
+    },
+    {
+        path: 'sneaker/:id',
+        component: SneakerDetailComponent
     },
     {
         path: '**',

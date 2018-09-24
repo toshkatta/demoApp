@@ -1,14 +1,13 @@
 
 <div class="container">
   <ul class="row">
-    <li class="col col-md-4" *ngFor="let sneaker of sneakers"><img class="rounded img-fluid" src="{{apiUrl}}/{{sneaker.image}}"/>
-      <h4>{{sneaker.brand.name}}</h4>
-      <h5>{{sneaker.name}}</h5>
-      <div>{{sneaker.type.name}}</div>
-      <div>{{sneaker.gender.name}}</div>
-      <div>Available sizes
-        <div *ngFor="let size of sneaker.sizes">{{size.eu}}</div>
-      </div>
-    </li>
+    <li class="col col-md-3 col-sm-4 col-6" *ngFor="let sneaker of sneakers"><a routerLink="/sneaker/{{sneaker.id}}"><img class="rounded img-fluid" src="{{apiUrl}}/{{sneaker.sneakerImages[3].path}}"/>
+        <h4>{{sneaker.brand.name}}</h4>
+        <h5>{{sneaker.name}}</h5>
+        <div>{{sneaker.type.name | titlecase}}-top</div>
+        <div>{{sneaker.gender.name | titlecase}}</div>
+        <div>Available sizes
+          <p>{{sneaker.sizes}}</p>
+        </div></a></li>
   </ul>
 </div>

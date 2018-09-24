@@ -13,6 +13,7 @@ import { LoginComponent } from './components/login/login.component'
 
 import { FileUploadModule } from 'ng2-file-upload';
 import { SneakerAdminComponent } from './components/sneaker-admin/sneaker-admin.component';
+import { SneakerDetailComponent } from './components/sneaker-detail/sneaker-detail.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SneakerAdminComponent } from './components/sneaker-admin/sneaker-admin.
     HomeComponent,
     ProfileComponent,
     LoginComponent,
-    SneakerAdminComponent
+    SneakerAdminComponent,
+    SneakerDetailComponent
   ],
   imports: [
     BrowserModule,

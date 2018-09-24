@@ -29,3 +29,12 @@ ul {
 .pointer {
     cursor: pointer;
 }
+
+a, a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+a:hover {
+    opacity: 0.6;
+}

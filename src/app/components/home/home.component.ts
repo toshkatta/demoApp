@@ -12,14 +12,16 @@ export class HomeComponent implements OnInit {
 
   constructor(private sneakerService: SneakerService) { }
 
-  private sneakers: Sneaker[]
-  private apiUrl:string = API_URL
+  private sneakers
+  private apiUrl: string = API_URL
 
   private loadSneakers() {
     this.sneakerService.getSneakers()
       .subscribe(resp => {
-        console.log('zaredi sneakers: ', resp)
         this.sneakers = resp
+        for (let sneaker of this.sneakers) {
+          sneaker.sizes = sneaker.sizes.map(size => size.eu).join(', ')
+        }
       })
   }
 

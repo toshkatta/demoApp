@@ -1,0 +1,11 @@
+.container(*ngIf='sneaker')
+    .row
+        .col-md-3.col-6(*ngFor='let image of sneaker.sneakerImages')
+            a(href='{{apiUrl}}/{{image.path}}', target='_blank')
+                img.rounded.img-fluid(src='{{apiUrl}}/{{image.path}}')
+    h4 {{sneaker.brand.name}}
+    h5 {{sneaker.name}}
+    div {{sneaker.type.name | titlecase}}-top
+    div {{sneaker.gender.name | titlecase}}
+    div Available sizes
+        p {{sneaker.sizes}}

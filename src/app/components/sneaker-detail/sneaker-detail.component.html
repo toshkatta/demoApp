@@ -1,0 +1,13 @@
+
+<div class="container" *ngIf="sneaker">
+  <div class="row">
+    <div class="col-md-3 col-6" *ngFor="let image of sneaker.sneakerImages"><a href="{{apiUrl}}/{{image.path}}" target="_blank"><img class="rounded img-fluid" src="{{apiUrl}}/{{image.path}}"/></a></div>
+  </div>
+  <h4>{{sneaker.brand.name}}</h4>
+  <h5>{{sneaker.name}}</h5>
+  <div>{{sneaker.type.name | titlecase}}-top</div>
+  <div>{{sneaker.gender.name | titlecase}}</div>
+  <div>Available sizes
+    <p>{{sneaker.sizes}}</p>
+  </div>
+</div>
